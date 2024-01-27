@@ -9,7 +9,7 @@ import UIKit
 
 final class NoteEditViewContrellerImpl: UIViewController {
     private var textStorage = SyntaxHighlightTextStorage()
-
+    
     private let note = """
 Hopefully, this Text Kit tutorial has helped you understand the features of the library you'll no doubt find useful in practically every app that you write. You've implemented dynamic type support, learned to respond to changes in text sizes within your app, used exclusion paths, and dynamically applied styles to text.
 1. *bold ddddd*
@@ -23,7 +23,7 @@ Hopefully, this Text Kit tutorial has helped you understand the features of the 
         super.viewDidLoad()
         
         setupUI()
-        createTextView()
+        createTextView()        
     }
     
     private func setupUI() {
@@ -63,8 +63,10 @@ Hopefully, this Text Kit tutorial has helped you understand the features of the 
         
         textView = UITextView(frame: newTextViewRect,
                               textContainer: container)
-//        textView.delegate = self
+        textView.delegate = self
         view.addSubview(textView)
+        view.addSubview(button)
+        
     }
     
     @objc
@@ -77,11 +79,28 @@ Hopefully, this Text Kit tutorial has helped you understand the features of the 
         textView.font = UIFont.systemFont(ofSize: 20)
         return textView
     }()
+    
+    private lazy var button: UIButton = {
+        let button = UIButton(frame: CGRect(x: 40,
+                                            y: 600,
+                                            width: 70,
+                                            height: 70))
+        button.addTarget(self, action: #selector(applyStyle),
+                         for: .touchUpInside)
+        button.backgroundColor = .red
+        return button
+    }()
+    
+    @objc
+    private func applyStyle() {
+        textStorage.performReplacementsForRange(changedRange: textView.selectedRange)
+        print(textStorage.attributedSubstring(from: NSRange(0..<note.count)))
+    }
 }
 
-//extension NoteEditViewContrellerImpl: UITextViewDelegate {
-//    
-//}
+extension NoteEditViewContrellerImpl: UITextViewDelegate {
+  
+}
 
 extension NoteEditViewContrellerImpl: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
