@@ -19,6 +19,7 @@
 		8FD4B0642B64FF7B008A659D /* NoteEditViewContrellerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B0632B64FF7A008A659D /* NoteEditViewContrellerImpl.swift */; };
 		8FD4B0662B6593F1008A659D /* SyntaxHighlightTextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B0652B6593F1008A659D /* SyntaxHighlightTextStorage.swift */; };
 		8FD4B0682B65C3EE008A659D /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B0672B65C3EE008A659D /* Style.swift */; };
+		8FD4B06B2B667DAD008A659D /* UIStyleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B06A2B667DAC008A659D /* UIStyleButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		8FD4B0632B64FF7A008A659D /* NoteEditViewContrellerImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditViewContrellerImpl.swift; sourceTree = "<group>"; };
 		8FD4B0652B6593F1008A659D /* SyntaxHighlightTextStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxHighlightTextStorage.swift; sourceTree = "<group>"; };
 		8FD4B0672B65C3EE008A659D /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		8FD4B06A2B667DAC008A659D /* UIStyleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStyleButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,8 +70,9 @@
 		8FD4B0392B64419F008A659D /* CFTNotes */ = {
 			isa = PBXGroup;
 			children = (
-				8FD4B0612B64FF49008A659D /* NoteEditModule */,
 				8FD4B0532B6445C3008A659D /* NotesModule */,
+				8FD4B0612B64FF49008A659D /* NoteEditModule */,
+				8FD4B0692B667D97008A659D /* CustomUI */,
 				8FD4B0512B64420B008A659D /* App */,
 				8FD4B0462B6441A1008A659D /* Assets.xcassets */,
 				8FD4B0482B6441A1008A659D /* LaunchScreen.storyboard */,
@@ -107,6 +110,14 @@
 				8FD4B0632B64FF7A008A659D /* NoteEditViewContrellerImpl.swift */,
 			);
 			path = NoteEditModule;
+			sourceTree = "<group>";
+		};
+		8FD4B0692B667D97008A659D /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				8FD4B06A2B667DAC008A659D /* UIStyleButton.swift */,
+			);
+			path = CustomUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,6 +198,7 @@
 				8FD4B0452B64419F008A659D /* CFTNotes.xcdatamodeld in Sources */,
 				8FD4B0662B6593F1008A659D /* SyntaxHighlightTextStorage.swift in Sources */,
 				8FD4B0602B645444008A659D /* NoteCell.swift in Sources */,
+				8FD4B06B2B667DAD008A659D /* UIStyleButton.swift in Sources */,
 				8FD4B0572B644728008A659D /* NotesPresenterImpl.swift in Sources */,
 				8FD4B0682B65C3EE008A659D /* Style.swift in Sources */,
 			);

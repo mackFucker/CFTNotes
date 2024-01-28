@@ -8,7 +8,7 @@
 import UIKit
 
 final class SyntaxHighlightTextStorage: NSTextStorage {
-    private let backingStore = NSMutableAttributedString()
+    private var backingStore = NSMutableAttributedString()
     
     override init() {
         super.init()
@@ -33,7 +33,8 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
     override func replaceCharacters(in range: NSRange,
                                     with str: String) {
         beginEditing()
-        backingStore.replaceCharacters(in: range, with:str)
+        backingStore.replaceCharacters(in: range,
+                                       with: str)
         edited(.editedCharacters, range: range,
                changeInLength: (str as NSString).length - range.length)
         endEditing()
@@ -46,6 +47,26 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         backingStore.setAttributes(attrs, range: range)
         edited(.editedAttributes, range: range, changeInLength: 0)
         endEditing()
+    }
+    
+    func addImage(_ image: UIImage,
+                  at position: NSRange) {
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = image
+        imageAttachment.bounds = CGRect(x: 0,
+                                        y: 0,
+                                        width: image.size.width / 4,
+                                        height: image.size.height / 4)
+        
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        
+        if position.length == 0 {
+            self.insert(imageString, at: position.location)
+        }
+        else {
+            deleteCharacters(in: position)
+            self.insert(imageString, at: position.location)
+        }
     }
     
     func applyStylesToRange(searchRange: NSRange,
@@ -68,6 +89,7 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         case .importantRed:
             let attributes = [NSAttributedString.Key.foregroundColor: UIColor.red]
             addAttributes(attributes, range: searchRange)
+            
         }
     }
     
@@ -79,4 +101,3 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         return [.font: font]
     }
 }
-

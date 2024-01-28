@@ -6,38 +6,72 @@
 //
 
 import UIKit
+import PhotosUI
 
 final class NoteEditViewContrellerImpl: UIViewController {
     private var textStorage = SyntaxHighlightTextStorage()
     private let screenBounds = UIScreen.main.bounds
+    var textView: UITextView!
+    
     private let note = """
-Hopefully, this Text Kit tutorial has helped you understand the features of the library you'll no doubt find useful in practically every app that you write. You've implemented dynamic type support, learned to respond to changes in text sizes within your app, used exclusion paths, and dynamically applied styles to text.
-1. *bold ddddd*
-2. _italic _italic_
-3. -strike through-
-4. ~script script~.
-5. ALL CAPS.
+If you have used Core Data before, you may remember that you have to create a data model (with a file extension .xcdatamodeld) using a data model editor for data persistence. With the release of SwiftData, you no longer need to do that. SwiftData streamlines the whole process with macros, another new Swift feature in iOS 17. Say, for example, you already define a model class for Song as follows:
 """
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        bottomConstraint = stylesButtonStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+        addNotification()
         setupUI()
         createTextView()        
     }
     
+    private func addNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            bottomConstraint.constant = -keyboardSize.height - 20
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        bottomConstraint.constant = -20
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     private func setupUI() {
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.hideKeyboardOnSwipeDownAndTouch))
-        let hideTouch = UITapGestureRecognizer(target: self, action:  #selector(self.hideKeyboardOnSwipeDownAndTouch))
+        let swipeUp = UISwipeGestureRecognizer(target: self,
+                                               action: #selector(self.hideKeyboard))
+        let swipeDown = UISwipeGestureRecognizer(target: self,
+                                                 action:  #selector(self.hideKeyboard))
         
-        swipeUp.delegate = self
+        let hideTouch = UITapGestureRecognizer(target: textView,
+                                               action:  #selector(self.hideKeyboard))
+        
         hideTouch.delegate = self
-        
-        swipeUp.direction =  UISwipeGestureRecognizer.Direction.up
         hideTouch.cancelsTouchesInView = false
         
+        swipeUp.delegate = self
+        swipeDown.delegate = self
+        
+        swipeUp.direction =  UISwipeGestureRecognizer.Direction.up
+        swipeDown.direction =  UISwipeGestureRecognizer.Direction.down
+        
         self.view.addGestureRecognizer(swipeUp)
-        self.view.addGestureRecognizer(hideTouch)
+        self.view.addGestureRecognizer(swipeDown)
         
         view.keyboardLayoutGuide.followsUndockedKeyboard = true
         view.backgroundColor = .systemBackground
@@ -63,44 +97,46 @@ Hopefully, this Text Kit tutorial has helped you understand the features of the 
         
         textView = UITextView(frame: newTextViewRect,
                               textContainer: container)
+        textView.textColor = .label
         textView.delegate = self
         view.addSubview(textView)
         view.addSubview(stylesButtonStack)
-        
     }
     
     @objc
-    func hideKeyboardOnSwipeDownAndTouch() {
+    func hideKeyboard() {
         view.endEditing(true)
     }
     
-    private lazy var textView: UITextView = {
-        let textView = UITextView(frame: view.bounds)
-        textView.font = UIFont.systemFont(ofSize: 20)
-        return textView
-    }()
+//    private lazy var textView: UITextView = {
+//        let textView = UITextView(frame: view.bounds)
+//        textView.font = UIFont.systemFont(ofSize: 20)
+//        return textView
+//    }()
     
     private lazy var stylesButtonStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [boldButton,
-                                                 italicButton,
-                                                 strikeButton,
-                                                 importantButton])
+                                                   italicButton,
+                                                   strikeButton,
+                                                   importantButton,
+                                                   addImageButton])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.distribution = .equalSpacing
         stack.alignment = .center
-//        stack.spacing = 10
         stack.backgroundColor = .systemGray3
         stack.layer.cornerRadius = 10
         return stack
     }()
     
+    private var bottomConstraint: NSLayoutConstraint!
     override func updateViewConstraints() {
         super.updateViewConstraints()
         NSLayoutConstraint.activate([
             stylesButtonStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             stylesButtonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            stylesButtonStack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+            stylesButtonStack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            bottomConstraint
         ])
     }
     
@@ -128,39 +164,48 @@ Hopefully, this Text Kit tutorial has helped you understand the features of the 
         return button
     }()
     
+    private lazy var addImageButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "photo.badge.plus"), for: .normal)
+        button.imageView?.tintColor = .black
+        button.addTarget(self, action: #selector(addImage), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc
+    private func addImage() {
+        var config = PHPickerConfiguration()
+        config.selectionLimit = 1
+        
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        self.present(picker, animated: true)
+    }
+    
     @objc
     private func applyStyle(_ sender: UIStyleButton) {
         textStorage.applyStylesToRange(searchRange: textView.selectedRange,
                                        style: sender.style)
-//        print(textStorage.attributedSubstring(from: NSRange(0..<note.count)))
     }
 }
 
-final class UIStyleButton: UIButton {
-    let style: Style
-    
-    init(style: Style) {
-        self.style = style
-        super.init(frame: .infinite)
-        switch style {
-        case .bold:
-            self.setBackgroundImage(UIImage(systemName: "bold"),
-                                    for: .normal)
-        case .italic:
-            self.setBackgroundImage(UIImage(systemName: "italic"),
-                                    for: .normal)
-        case .strike:
-            self.setBackgroundImage(UIImage(systemName: "strikethrough"),
-                                    for: .normal)
-        case .importantRed:
-            self.setBackgroundImage(UIImage(systemName: "exclamationmark"),
-                                    for: .normal)
+extension NoteEditViewContrellerImpl: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController,
+                didFinishPicking results: [PHPickerResult]) {
+
+        for result in results {
+            result.itemProvider.loadObject(ofClass: UIImage.self) { object,
+                error in
+                if let image = object as? UIImage {
+                    DispatchQueue.main.async {
+                        self.textStorage.addImage(image,
+                                                  at: self.textView.selectedRange)
+                    }
+                }
+            }
         }
-        self.tintColor = .black
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+       
+        dismiss(animated: true)
     }
 }
 
