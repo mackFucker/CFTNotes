@@ -9,7 +9,7 @@ import UIKit
 
 final class NoteEditViewContrellerImpl: UIViewController {
     private var textStorage = SyntaxHighlightTextStorage()
-    
+    private let screenBounds = UIScreen.main.bounds
     private let note = """
 Hopefully, this Text Kit tutorial has helped you understand the features of the library you'll no doubt find useful in practically every app that you write. You've implemented dynamic type support, learned to respond to changes in text sizes within your app, used exclusion paths, and dynamically applied styles to text.
 1. *bold ddddd*
@@ -65,7 +65,7 @@ Hopefully, this Text Kit tutorial has helped you understand the features of the 
                               textContainer: container)
         textView.delegate = self
         view.addSubview(textView)
-        view.addSubview(button)
+        view.addSubview(stylesButtonStack)
         
     }
     
@@ -80,21 +80,87 @@ Hopefully, this Text Kit tutorial has helped you understand the features of the 
         return textView
     }()
     
-    private lazy var button: UIButton = {
-        let button = UIButton(frame: CGRect(x: 40,
-                                            y: 600,
-                                            width: 70,
-                                            height: 70))
-        button.addTarget(self, action: #selector(applyStyle),
-                         for: .touchUpInside)
-        button.backgroundColor = .red
+    private lazy var stylesButtonStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [boldButton,
+                                                 italicButton,
+                                                 strikeButton,
+                                                 importantButton])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .horizontal
+        stack.distribution = .equalSpacing
+        stack.alignment = .center
+//        stack.spacing = 10
+        stack.backgroundColor = .systemGray3
+        stack.layer.cornerRadius = 10
+        return stack
+    }()
+    
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        NSLayoutConstraint.activate([
+            stylesButtonStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            stylesButtonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            stylesButtonStack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private lazy var boldButton: UIStyleButton = {
+        let button = UIStyleButton(style: .bold)
+        button.addTarget(self, action: #selector(applyStyle), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var italicButton: UIStyleButton = {
+        let button = UIStyleButton(style: .italic)
+        button.addTarget(self, action: #selector(applyStyle), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var strikeButton: UIStyleButton = {
+        let button = UIStyleButton(style: .strike)
+        button.addTarget(self, action: #selector(applyStyle), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var importantButton: UIStyleButton = {
+        let button = UIStyleButton(style: .importantRed)
+        button.addTarget(self, action: #selector(applyStyle), for: .touchUpInside)
         return button
     }()
     
     @objc
-    private func applyStyle() {
-        textStorage.performReplacementsForRange(changedRange: textView.selectedRange)
-        print(textStorage.attributedSubstring(from: NSRange(0..<note.count)))
+    private func applyStyle(_ sender: UIStyleButton) {
+        textStorage.applyStylesToRange(searchRange: textView.selectedRange,
+                                       style: sender.style)
+//        print(textStorage.attributedSubstring(from: NSRange(0..<note.count)))
+    }
+}
+
+final class UIStyleButton: UIButton {
+    let style: Style
+    
+    init(style: Style) {
+        self.style = style
+        super.init(frame: .infinite)
+        switch style {
+        case .bold:
+            self.setBackgroundImage(UIImage(systemName: "bold"),
+                                    for: .normal)
+        case .italic:
+            self.setBackgroundImage(UIImage(systemName: "italic"),
+                                    for: .normal)
+        case .strike:
+            self.setBackgroundImage(UIImage(systemName: "strikethrough"),
+                                    for: .normal)
+        case .importantRed:
+            self.setBackgroundImage(UIImage(systemName: "exclamationmark"),
+                                    for: .normal)
+        }
+        self.tintColor = .black
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

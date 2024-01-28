@@ -48,7 +48,7 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         endEditing()
     }
     
-    private func applyStylesToRange(searchRange: NSRange,
+    func applyStylesToRange(searchRange: NSRange,
                             style: Style) {
         switch style {
         case .bold:
@@ -65,20 +65,10 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
             let attributes =  [NSAttributedString.Key.strikethroughStyle: 1]
             addAttributes(attributes, range: searchRange)
             
-        case .script:
-            let attributes = createAttributesForFontStyle(.body,
-                                                          withTrait: .classScripts)
-            addAttributes(attributes, range: searchRange)
-            
         case .importantRed:
             let attributes = [NSAttributedString.Key.foregroundColor: UIColor.red]
             addAttributes(attributes, range: searchRange)
         }
-    }
-    
-    func performReplacementsForRange(changedRange: NSRange) {
-        applyStylesToRange(searchRange: changedRange,
-                           style: .strike)
     }
     
     private func createAttributesForFontStyle(_ style: UIFont.TextStyle,

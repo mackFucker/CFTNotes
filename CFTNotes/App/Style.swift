@@ -11,6 +11,5 @@ enum Style {
     case bold
     case italic
     case strike
-    case script
     case importantRed
 }
