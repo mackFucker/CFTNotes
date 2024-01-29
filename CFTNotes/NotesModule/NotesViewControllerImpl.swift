@@ -15,6 +15,7 @@ final class NotesViewControllerImpl: UIViewController,
                                      NotesViewController {
 
     var presenter: NotesPresenter!
+    var data = [NoteObjModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,10 +34,27 @@ final class NotesViewControllerImpl: UIViewController,
         let tableView = UITableView(frame: view.bounds,
                                     style: .insetGrouped)
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(NoteCell.self,
-                           forCellReuseIdentifier: NoteCell.identifer)
+        tableView.register(NoteCell.self)
+       
         return tableView
     }()
+    
+    private lazy var addNoteButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self,
+                         action: #selector(appendNote),
+                         for: .touchUpInside)
+        button.setImage(UIImage(systemName: "plus"),
+                        for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .label
+        return button
+    }()
+    
+    @objc
+    private func appendNote() {
+        presenter.appendNote()
+    }
     
     private func setupUI() {
         self.title = "CFTNotes"
@@ -46,6 +64,9 @@ final class NotesViewControllerImpl: UIViewController,
         tableView.delegate = self
         
         view.addSubview(tableView)
+        
+        let barButtonItem = UIBarButtonItem(customView: addNoteButton)
+        navigationItem.rightBarButtonItem = barButtonItem
     }
     
     private func tapOnCell(_ id: Int) {
@@ -53,20 +74,32 @@ final class NotesViewControllerImpl: UIViewController,
     }
     
     func reloadTableView() {
-        presenter.getNotesViewModels()
+        Task {
+            let data = await presenter.get()!
+            // Обновление tableView только после получения данных
+            updateTableView(with: data)
+        }
     }
+
+    @MainActor
+    private func updateTableView(with data: [NoteObjModel]) {
+        self.data = data
+        tableView.reloadData()
+    }
+    
 }
 
 extension NotesViewControllerImpl: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        100
+        data.count
     }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NoteCell.identifer,
-                                                 for: indexPath) as! NoteCell
+        let cell = tableView.dequeueReusableCell(with: NoteCell.reuseIdentifier,
+                                                 for: indexPath) as NoteCell
+        cell.setup(title: data[indexPath.row].title)
         return cell
     }
 }
@@ -77,5 +110,15 @@ extension NotesViewControllerImpl: UITableViewDelegate {
         
         tableView.deselectRow(at: indexPath,
                               animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "Delete") { _, _, completionHandler in
+            self.presenter.deleteBy(note: self.data[indexPath.row])
+            completionHandler(true)
+        }
+        let configuration = UISwipeActionsConfiguration(actions: [delete])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
     }
 }

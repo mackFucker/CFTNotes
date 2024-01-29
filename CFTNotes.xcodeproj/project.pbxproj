@@ -21,6 +21,9 @@
 		8FD4B0682B65C3EE008A659D /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B0672B65C3EE008A659D /* Style.swift */; };
 		8FD4B06B2B667DAD008A659D /* UIStyleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B06A2B667DAC008A659D /* UIStyleButton.swift */; };
 		8FD4B06E2B67AD97008A659D /* UIImage +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B06D2B67AD97008A659D /* UIImage +.swift */; };
+		8FD4B0712B67B189008A659D /* SwiftDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B0702B67B189008A659D /* SwiftDataService.swift */; };
+		8FD4B0742B67B29E008A659D /* NoteObjModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B0732B67B29E008A659D /* NoteObjModel.swift */; };
+		8FD4B0762B67C82E008A659D /* UITableViewCell +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B0752B67C82E008A659D /* UITableViewCell +.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +43,9 @@
 		8FD4B0672B65C3EE008A659D /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		8FD4B06A2B667DAC008A659D /* UIStyleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStyleButton.swift; sourceTree = "<group>"; };
 		8FD4B06D2B67AD97008A659D /* UIImage +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage +.swift"; sourceTree = "<group>"; };
+		8FD4B0702B67B189008A659D /* SwiftDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataService.swift; sourceTree = "<group>"; };
+		8FD4B0732B67B29E008A659D /* NoteObjModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteObjModel.swift; sourceTree = "<group>"; };
+		8FD4B0752B67C82E008A659D /* UITableViewCell +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell +.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,7 @@
 		8FD4B0392B64419F008A659D /* CFTNotes */ = {
 			isa = PBXGroup;
 			children = (
+				8FD4B06F2B67B047008A659D /* Services */,
 				8FD4B0532B6445C3008A659D /* NotesModule */,
 				8FD4B0612B64FF49008A659D /* NoteEditModule */,
 				8FD4B06C2B67AD7A008A659D /* Extensions */,
@@ -90,7 +97,6 @@
 			children = (
 				8FD4B03A2B64419F008A659D /* AppDelegate.swift */,
 				8FD4B03C2B64419F008A659D /* SceneDelegate.swift */,
-				8FD4B0652B6593F1008A659D /* SyntaxHighlightTextStorage.swift */,
 				8FD4B0672B65C3EE008A659D /* Style.swift */,
 			);
 			path = App;
@@ -127,8 +133,27 @@
 			isa = PBXGroup;
 			children = (
 				8FD4B06D2B67AD97008A659D /* UIImage +.swift */,
+				8FD4B0752B67C82E008A659D /* UITableViewCell +.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8FD4B06F2B67B047008A659D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8FD4B0722B67B282008A659D /* SwiftDataService */,
+				8FD4B0652B6593F1008A659D /* SyntaxHighlightTextStorage.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		8FD4B0722B67B282008A659D /* SwiftDataService */ = {
+			isa = PBXGroup;
+			children = (
+				8FD4B0702B67B189008A659D /* SwiftDataService.swift */,
+				8FD4B0732B67B29E008A659D /* NoteObjModel.swift */,
+			);
+			path = SwiftDataService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,14 +226,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FD4B0762B67C82E008A659D /* UITableViewCell +.swift in Sources */,
 				8FD4B0642B64FF7B008A659D /* NoteEditViewContrellerImpl.swift in Sources */,
 				8FD4B03B2B64419F008A659D /* AppDelegate.swift in Sources */,
+				8FD4B0712B67B189008A659D /* SwiftDataService.swift in Sources */,
 				8FD4B06E2B67AD97008A659D /* UIImage +.swift in Sources */,
 				8FD4B03D2B64419F008A659D /* SceneDelegate.swift in Sources */,
 				8FD4B05E2B644E9D008A659D /* NotesInteractorImpl.swift in Sources */,
 				8FD4B0552B6445E2008A659D /* NotesViewControllerImpl.swift in Sources */,
 				8FD4B0452B64419F008A659D /* CFTNotes.xcdatamodeld in Sources */,
 				8FD4B0662B6593F1008A659D /* SyntaxHighlightTextStorage.swift in Sources */,
+				8FD4B0742B67B29E008A659D /* NoteObjModel.swift in Sources */,
 				8FD4B0602B645444008A659D /* NoteCell.swift in Sources */,
 				8FD4B06B2B667DAD008A659D /* UIStyleButton.swift in Sources */,
 				8FD4B0572B644728008A659D /* NotesPresenterImpl.swift in Sources */,

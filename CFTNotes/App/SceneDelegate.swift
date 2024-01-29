@@ -19,10 +19,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         //FIXME: DI OR ...
-//        let viewController = NotesViewControllerImpl()
-//        let presenter = NotesPresenterImpl(view: viewController)
-//        viewController.presenter = presenter
-        let viewController = NoteEditViewContrellerImpl()
+        let viewController = NotesViewControllerImpl()
+        let presenter = NotesPresenterImpl(view: viewController,
+                                           interactor: NotesInteractorImpl())
+        viewController.presenter = presenter
+//        let viewController = NoteEditViewContrellerImpl()
         
         let navController = UINavigationController(rootViewController: viewController)
         navController.navigationBar.prefersLargeTitles = true

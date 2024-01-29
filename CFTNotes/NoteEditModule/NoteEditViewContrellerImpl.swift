@@ -130,6 +130,7 @@ If you have used Core Data before, you may remember that you have to create a da
     }()
     
     private var bottomConstraint: NSLayoutConstraint!
+    
     override func updateViewConstraints() {
         super.updateViewConstraints()
         NSLayoutConstraint.activate([
