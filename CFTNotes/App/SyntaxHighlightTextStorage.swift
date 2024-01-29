@@ -49,21 +49,16 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         endEditing()
     }
     
-    func addImage(_ image: UIImage,
-                  at position: NSRange) {
+    func addImage(_ image: UIImage, at position: NSRange) {
         let imageAttachment = NSTextAttachment()
-        imageAttachment.image = image
-        imageAttachment.bounds = CGRect(x: 0,
-                                        y: 0,
-                                        width: image.size.width / 4,
-                                        height: image.size.height / 4)
-        
+    
+        let scaledImage = image.scalePreservingAspectRatio(targetSize: UIScreen.main.bounds.size)
+        imageAttachment.image = scaledImage
         let imageString = NSAttributedString(attachment: imageAttachment)
-        
+
         if position.length == 0 {
             self.insert(imageString, at: position.location)
-        }
-        else {
+        } else {
             deleteCharacters(in: position)
             self.insert(imageString, at: position.location)
         }
