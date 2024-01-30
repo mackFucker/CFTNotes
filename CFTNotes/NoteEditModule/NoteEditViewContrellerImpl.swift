@@ -10,19 +10,39 @@ import PhotosUI
 
 final class NoteEditViewContrellerImpl: UIViewController {
     private var textStorage = SyntaxHighlightTextStorage()
+    private var presenter: NoteEditPresenter = NoteEditPresenterImpl()
     private let screenBounds = UIScreen.main.bounds
-    var textView: UITextView!
     
-    private let note = """
-If you have used Core Data before, you may remember that you have to create a data model (with a file extension .xcdatamodeld) using a data model editor for data persistence. With the release of SwiftData, you no longer need to do that. SwiftData streamlines the whole process with macros, another new Swift feature in iOS 17. Say, for example, you already define a model class for Song as follows:
-"""
+    private var textView: UITextView!
+    private var stylesButtonStack: UIStackView!
+    
+    private var uuid: String
+    
+    private var data: NoteObjModel? = nil
+    
+    init(uuid: String!) {
+        
+        self.uuid = uuid
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bottomConstraint = stylesButtonStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+        Task {
+            data = await presenter.getBy(uuid: uuid)
+            setData(data)
+        }
+        
+        createTextView()
+        createStylesButtons()
+
         addNotification()
         setupUI()
-        createTextView()        
+        
     }
     
     private func addNotification() {
@@ -77,12 +97,15 @@ If you have used Core Data before, you may remember that you have to create a da
         view.backgroundColor = .systemBackground
     }
     
-    private func createTextView() {
+    @MainActor 
+    private func setData(_ data: NoteObjModel?) {
         let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
-        let attrString = NSAttributedString(string: note,
+        let attrString = NSAttributedString(string: data?.text ?? "error",
                                             attributes: attrs)
-        
         textStorage.append(attrString)
+    }
+    
+    private func createTextView() {
         
         let newTextViewRect = view.bounds
         
@@ -97,37 +120,14 @@ If you have used Core Data before, you may remember that you have to create a da
         
         textView = UITextView(frame: newTextViewRect,
                               textContainer: container)
-        textView.textColor = .label
         textView.delegate = self
         view.addSubview(textView)
-        view.addSubview(stylesButtonStack)
     }
     
     @objc
     func hideKeyboard() {
         view.endEditing(true)
     }
-    
-//    private lazy var textView: UITextView = {
-//        let textView = UITextView(frame: view.bounds)
-//        textView.font = UIFont.systemFont(ofSize: 20)
-//        return textView
-//    }()
-    
-    private lazy var stylesButtonStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [boldButton,
-                                                   italicButton,
-                                                   strikeButton,
-                                                   importantButton,
-                                                   addImageButton])
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.distribution = .equalSpacing
-        stack.alignment = .center
-        stack.backgroundColor = .systemGray3
-        stack.layer.cornerRadius = 10
-        return stack
-    }()
     
     private var bottomConstraint: NSLayoutConstraint!
     
@@ -139,6 +139,25 @@ If you have used Core Data before, you may remember that you have to create a da
             stylesButtonStack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             bottomConstraint
         ])
+    }
+    
+    func createStylesButtons() {
+        var views: [UIButton] = Style.allCases.map { UIStyleButton(style: $0)}
+        views
+            .forEach {$0.addTarget(self,
+                                   action: #selector(applyStyle),
+                                   for: .touchUpInside)}
+        views.append(addImageButton)
+    
+        stylesButtonStack = UIStackView(arrangedSubviews: views)
+        stylesButtonStack.translatesAutoresizingMaskIntoConstraints = false
+        stylesButtonStack.axis = .horizontal
+        stylesButtonStack.distribution = .equalSpacing
+        stylesButtonStack.alignment = .center
+        stylesButtonStack.backgroundColor = .systemGray3
+        stylesButtonStack.layer.cornerRadius = 10
+        bottomConstraint = stylesButtonStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+        view.addSubview(stylesButtonStack)
     }
     
     private lazy var boldButton: UIStyleButton = {
@@ -193,7 +212,7 @@ If you have used Core Data before, you may remember that you have to create a da
 extension NoteEditViewContrellerImpl: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController,
                 didFinishPicking results: [PHPickerResult]) {
-
+        
         for result in results {
             result.itemProvider.loadObject(ofClass: UIImage.self) { object,
                 error in
@@ -205,17 +224,21 @@ extension NoteEditViewContrellerImpl: PHPickerViewControllerDelegate {
                 }
             }
         }
-       
+        
         dismiss(animated: true)
     }
 }
 
 extension NoteEditViewContrellerImpl: UITextViewDelegate {
-  
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        presenter.set(note: data!,
+                      newNoteText: textView.text)
+    }
 }
 
 extension NoteEditViewContrellerImpl: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                           shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 }

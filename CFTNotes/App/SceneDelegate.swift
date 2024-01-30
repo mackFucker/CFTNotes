@@ -18,16 +18,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        //FIXME: DI OR ...
-        let viewController = NotesViewControllerImpl()
-        let presenter = NotesPresenterImpl(view: viewController,
-                                           interactor: NotesInteractorImpl())
-        viewController.presenter = presenter
-//        let viewController = NoteEditViewContrellerImpl()
-        
-        let navController = UINavigationController(rootViewController: viewController)
-        navController.navigationBar.prefersLargeTitles = true
-        window?.rootViewController = navController
-        window?.makeKeyAndVisible()
+        AppRouter(window: window).start()
     }
 }

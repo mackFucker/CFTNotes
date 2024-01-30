@@ -7,20 +7,21 @@
 
 import Foundation
 import SwiftData
+import Combine
 
 final class SwiftDataService {
     static var shared = SwiftDataService()
     var container: ModelContainer?
     var context: ModelContext?
-//    var changed: Bool = false
+    private var notesPublisher: CurrentValueSubject<[NoteObjModel], Never> = CurrentValueSubject(
+        []
+    )
     
     init() {
         do {
             container = try ModelContainer(for: NoteObjModel.self)
             if let container {
                 context = ModelContext(container)
-//                container.deleteAllData()
-//                changed = context!.hasChanges
             }
         }
         catch {
@@ -28,13 +29,16 @@ final class SwiftDataService {
         }
     }
     
-    func append(title: String?) {
-        guard let title else { return }
+    func subscribe() -> AnyPublisher<[NoteObjModel], Never> {
+        return notesPublisher.eraseToAnyPublisher()
+    }
+    
+    func append() {
         if let context {
             let noteToBeappended = NoteObjModel(id: UUID().uuidString,
-                                                title: title,
-                                                text: "",
+                                                text: "New note",
                                                 time: Date().timeIntervalSince1970)
+            notesPublisher.send([noteToBeappended])
             context.insert(noteToBeappended)
         }
     }
@@ -42,26 +46,38 @@ final class SwiftDataService {
     func get() async throws -> [NoteObjModel] {
         let descriptor = FetchDescriptor<NoteObjModel>(sortBy: [SortDescriptor<NoteObjModel>(\.time)])
         guard let context else {
-            throw NSError(domain: "Error fetching tasks",
-                          code: 100,
-                          userInfo: nil)
+            throw Errors.fetchingError
         }
         do {
             let data = try context.fetch(descriptor)
             return data
         } catch {
-            throw error
+            throw Errors.fetchingError
         }
     }
     
-    func getBy(id: Int) async throws -> NoteObjModel  {
-        return NoteObjModel(id: "", title: "", text: "", time: 12)
+    func getBy(uuid: String) async throws -> NoteObjModel? {
+        let descriptor = FetchDescriptor<NoteObjModel>(sortBy: [SortDescriptor<NoteObjModel>(\.time)])
+        guard let context else {
+            throw Errors.fetchingError
+        }
+        do {
+            let data = try context.fetch(descriptor)
+            if let result = data.first(where: { $0.id == uuid }) {
+                return result
+            } else {
+                throw Errors.notFound
+            }
+        } catch {
+            throw Errors.fetchingError
+        }
     }
     
     func set(note: NoteObjModel,
              newNoteText: String) {
         let noteToBeUpdated = note
         noteToBeUpdated.text = newNoteText
+        notesPublisher.send([])
     }
     
     func deleteBy(note: NoteObjModel) {
@@ -69,5 +85,14 @@ final class SwiftDataService {
         if let context {
             context.delete(noteToBeDeleted)
         }
+        notesPublisher.send([])
+    }
+}
+
+extension SwiftDataService {
+    
+    enum Errors: Error {
+        case fetchingError
+        case notFound
     }
 }

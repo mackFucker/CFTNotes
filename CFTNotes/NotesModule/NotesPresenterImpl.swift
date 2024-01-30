@@ -9,19 +9,15 @@ import Foundation
 
 protocol NotesPresenter: AnyObject {
     func appendNote()
-    func get() async -> [NoteObjModel]?
-    func getBy(id: Int) async -> NoteObjModel?
+    func get() async -> [NoteObjModel]
 
-    func set(note: NoteObjModel, newNoteText: String)
     func deleteBy(note: NoteObjModel)
     
     func viewDidLoadEvent()
-    func viewWillAppearEvent()
     func notesChanges()
 }
 
 final class NotesPresenterImpl: NotesPresenter {
-    
     private weak var view: NotesViewController?
     private let interactor: NotesInteractor
     
@@ -32,50 +28,31 @@ final class NotesPresenterImpl: NotesPresenter {
     }
     
     func appendNote() {
-        interactor.append(title: "1 1 1 1 1 ")
-        view?.reloadTableView()
+        interactor.append()
     }
-    
-    func get() async -> [NoteObjModel]? {
+
+    func get() async -> [NoteObjModel] {
         do {
             return try await interactor.get()
         }
         catch {
-            print(error)
-            //view.alert
-            return nil
+            let error = error as! SwiftDataService.Errors
+            switch error {
+            case .fetchingError:
+                view?.showAlert(error: "Fetching error")
+            case .notFound:
+                view?.showAlert(error: "Not found")
+            }
+            return [NoteObjModel]()
         }
-//        view?.reloadTableView()
-    }
-    
-    func getBy(id: Int) async -> NoteObjModel? {
-        do {
-            return try await interactor.getBy(id: id)
-        }
-        catch {
-            print(error)
-            //view.alert
-            return nil
-        }
-//        view?.reloadTableView()
-    }
-    
-    func set(note: NoteObjModel, newNoteText: String) {
-        interactor.set(note: note, newNoteText: newNoteText)
     }
     
     func deleteBy(note: NoteObjModel) {
         interactor.deleteBy(note: note)
-        view?.reloadTableView()
     }
     
     func viewDidLoadEvent() {
-        //create publisher in interactor -> dbService
-         
-    }
-    
-    func viewWillAppearEvent() {
-        view?.reloadTableView()
+        interactor.subscribe(presenter: self)
     }
     
     func notesChanges() {

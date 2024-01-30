@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Style {
+enum Style: CaseIterable {
     case bold
     case italic
     case strike

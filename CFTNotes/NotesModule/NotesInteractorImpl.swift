@@ -6,34 +6,39 @@
 //
 
 import Foundation
+import Combine
 
 protocol NotesInteractor: AnyObject {
-    func append(title: String?)
-    
+    func append()
     func get() async throws -> [NoteObjModel]
-    func getBy(id: Int) async throws -> NoteObjModel
     func set(note: NoteObjModel, newNoteText: String)
     func deleteBy(note: NoteObjModel)
+    func subscribe(presenter: NotesPresenter)
 }
 
 final class NotesInteractorImpl: NotesInteractor {
-    let dbService = SwiftDataService.shared
+    private let dbService = SwiftDataService.shared
+    private var canelabeles: Set<AnyCancellable> = .init()
     
-    func append(title: String?) {
-        dbService.append(title: title)
+    func subscribe(presenter: NotesPresenter) {
+        dbService.subscribe()
+            .sink(receiveValue: {_ in 
+                presenter.notesChanges()
+            })
+            .store(in: &canelabeles)
+    }
+    
+    func append() {
+        dbService.append()
     }
     
     func get() async throws -> [NoteObjModel] {
         try await dbService.get()
     }
     
-    func getBy(id: Int) async throws -> NoteObjModel {
-        try await dbService.getBy(id: id)
-    }
-    
     func set(note: NoteObjModel, newNoteText: String) {
         dbService.set(note: note,
-                      newNoteText: "AAAAAA")
+                      newNoteText: newNoteText)
     }
     
     func deleteBy(note: NoteObjModel) {

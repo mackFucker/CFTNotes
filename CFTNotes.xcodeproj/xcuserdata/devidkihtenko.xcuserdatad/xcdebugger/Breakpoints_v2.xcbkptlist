@@ -7,110 +7,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F3D1EC2B-A486-4E31-90E5-02D5CF3D0907"
+            uuid = "575B1B4F-87F6-4D49-AE61-D99FD8C1A6D1"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CFTNotes/NotesModule/NoteCell.swift"
+            filePath = "CFTNotes/NoteEditModule/NoteEditViewContrellerImpl.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
-            landmarkName = "setup(title:)"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
+            landmarkName = "createStylesButtons()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A8D2D5A9-7BD9-4D42-BEB7-233E9332B59D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CFTNotes/NotesModule/NotesPresenterImpl.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "get()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "A8D2D5A9-7BD9-4D42-BEB7-233E9332B59D - 44efc575e9dacf81"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for CFTNotes.NotesPresenterImpl.get() async -&gt; Swift.Optional&lt;Swift.Array&lt;CFTNotes.NoteObjModel&gt;&gt;"
-                  moduleName = "CFTNotes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/devidkihtenko/Desktop/CFTNotes/CFTNotes/NotesModule/NotesPresenterImpl.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "42"
-                  endingLineNumber = "42"
-                  offsetFromSymbolStart = "104">
-               </Location>
-               <Location
-                  uuid = "A8D2D5A9-7BD9-4D42-BEB7-233E9332B59D - 12f2064ff7596905"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for CFTNotes.NotesPresenterImpl.get() async -&gt; Swift.Optional&lt;Swift.Array&lt;CFTNotes.NoteObjModel&gt;&gt;"
-                  moduleName = "CFTNotes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/devidkihtenko/Desktop/CFTNotes/CFTNotes/NotesModule/NotesPresenterImpl.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "56">
-               </Location>
-               <Location
-                  uuid = "A8D2D5A9-7BD9-4D42-BEB7-233E9332B59D - 17b27e9714667ca1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(2) await resume partial function for CFTNotes.NotesPresenterImpl.get() async -&gt; Swift.Optional&lt;Swift.Array&lt;CFTNotes.NoteObjModel&gt;&gt;"
-                  moduleName = "CFTNotes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/devidkihtenko/Desktop/CFTNotes/CFTNotes/NotesModule/NotesPresenterImpl.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "40">
-               </Location>
-               <Location
-                  uuid = "A8D2D5A9-7BD9-4D42-BEB7-233E9332B59D - 239b85be965b2dc7"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for CFTNotes.NotesPresenterImpl.get() async -&gt; Swift.Optional&lt;Swift.Array&lt;CFTNotes.NoteObjModel&gt;&gt;"
-                  moduleName = "CFTNotes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/devidkihtenko/Desktop/CFTNotes/CFTNotes/NotesModule/NotesPresenterImpl.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "28">
-               </Location>
-               <Location
-                  uuid = "A8D2D5A9-7BD9-4D42-BEB7-233E9332B59D - 44efc575e9dacfe0"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for CFTNotes.NotesPresenterImpl.get() async -&gt; Swift.Optional&lt;Swift.Array&lt;CFTNotes.NoteObjModel&gt;&gt;"
-                  moduleName = "CFTNotes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/devidkihtenko/Desktop/CFTNotes/CFTNotes/NotesModule/NotesPresenterImpl.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "60">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

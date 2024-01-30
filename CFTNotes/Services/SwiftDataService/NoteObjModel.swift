@@ -9,20 +9,16 @@ import Foundation
 import SwiftData
 
 @Model
-class NoteObjModel {
+final class NoteObjModel {
     @Attribute(.unique) var id: String
-    
-    var title: String
     var text: String
     var time: Double
     
     init(id: String,
-         title: String,
          text: String,
          time: Double) {
         
         self.id = id
-        self.title = title
         self.text = text
         self.time = time
     }
