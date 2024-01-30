@@ -38,8 +38,8 @@ final class SwiftDataService {
             let noteToBeappended = NoteObjModel(id: UUID().uuidString,
                                                 text: "New note",
                                                 time: Date().timeIntervalSince1970)
-            notesPublisher.send([noteToBeappended])
             context.insert(noteToBeappended)
+            notesPublisher.send([noteToBeappended])
         }
     }
     

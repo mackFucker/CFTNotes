@@ -18,14 +18,14 @@ protocol NotesInteractor: AnyObject {
 
 final class NotesInteractorImpl: NotesInteractor {
     private let dbService = SwiftDataService.shared
-    private var canelabeles: Set<AnyCancellable> = .init()
+    private var cancellable: Set<AnyCancellable> = .init()
     
     func subscribe(presenter: NotesPresenter) {
         dbService.subscribe()
             .sink(receiveValue: {_ in 
                 presenter.notesChanges()
             })
-            .store(in: &canelabeles)
+            .store(in: &cancellable)
     }
     
     func append() {

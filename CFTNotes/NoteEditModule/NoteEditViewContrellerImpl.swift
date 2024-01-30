@@ -20,6 +20,8 @@ final class NoteEditViewContrellerImpl: UIViewController {
     
     private var data: NoteObjModel? = nil
     
+    private var lastText = ""
+    
     init(uuid: String!) {
         
         self.uuid = uuid
@@ -160,30 +162,6 @@ final class NoteEditViewContrellerImpl: UIViewController {
         view.addSubview(stylesButtonStack)
     }
     
-    private lazy var boldButton: UIStyleButton = {
-        let button = UIStyleButton(style: .bold)
-        button.addTarget(self, action: #selector(applyStyle), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var italicButton: UIStyleButton = {
-        let button = UIStyleButton(style: .italic)
-        button.addTarget(self, action: #selector(applyStyle), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var strikeButton: UIStyleButton = {
-        let button = UIStyleButton(style: .strike)
-        button.addTarget(self, action: #selector(applyStyle), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var importantButton: UIStyleButton = {
-        let button = UIStyleButton(style: .importantRed)
-        button.addTarget(self, action: #selector(applyStyle), for: .touchUpInside)
-        return button
-    }()
-    
     private lazy var addImageButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "photo.badge.plus"), for: .normal)
@@ -231,7 +209,24 @@ extension NoteEditViewContrellerImpl: PHPickerViewControllerDelegate {
 
 extension NoteEditViewContrellerImpl: UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
-        presenter.set(note: data!,
+        
+        if lastText.isEmpty {
+            lastText = textView.text
+            }
+
+        NSObject.cancelPreviousPerformRequests(withTarget: self,
+                                               selector: #selector(setDataInPresenter),
+                                               object: lastText)
+        lastText = textView.text
+        
+        self.perform(#selector(setDataInPresenter),
+                     with: textView.text,
+                     afterDelay: 0.5)
+    }
+    
+    @objc
+    private func setDataInPresenter() {
+        presenter.set(note: self.data!,
                       newNoteText: textView.text)
     }
 }
