@@ -44,8 +44,10 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
                                 range: NSRange) {
         
         beginEditing()
-        backingStore.setAttributes(attrs, range: range)
-        edited(.editedAttributes, range: range, changeInLength: 0)
+        backingStore.setAttributes(attrs,
+                                   range: range)
+        edited(.editedAttributes, range: range,
+               changeInLength: 0)
         endEditing()
     }
     
@@ -54,14 +56,27 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
     
         let scaledImage = image.scalePreservingAspectRatio(targetSize: UIScreen.main.bounds.size)
         imageAttachment.image = scaledImage
+        
         let imageString = NSAttributedString(attachment: imageAttachment)
+        
+        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+        let descriptorWithTrait = fontDescriptor.withSymbolicTraits(.classClarendonSerifs)
+        let font = UIFont(descriptor: descriptorWithTrait!, size: 0)
 
+        let attributedString = NSMutableAttributedString(attributedString: imageString)
+        
+        attributedString.addAttribute(NSAttributedString.Key.font, value: font, range: NSRange(location: 0, length: attributedString.length))
+        
         if position.length == 0 {
-            self.insert(imageString, at: position.location)
+            self.insert(attributedString,
+                        at: position.location)
         } else {
             deleteCharacters(in: position)
-            self.insert(imageString, at: position.location)
+            self.insert(attributedString,
+                        at: position.location)
         }
+        
+        print(backingStore)
     }
     
     func applyStylesToRange(searchRange: NSRange,

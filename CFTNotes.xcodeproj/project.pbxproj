@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8FD4B03B2B64419F008A659D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B03A2B64419F008A659D /* AppDelegate.swift */; };
 		8FD4B03D2B64419F008A659D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B03C2B64419F008A659D /* SceneDelegate.swift */; };
-		8FD4B0452B64419F008A659D /* CFTNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B0432B64419F008A659D /* CFTNotes.xcdatamodeld */; };
 		8FD4B0472B6441A1008A659D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FD4B0462B6441A1008A659D /* Assets.xcassets */; };
 		8FD4B04A2B6441A1008A659D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FD4B0482B6441A1008A659D /* LaunchScreen.storyboard */; };
 		8FD4B0552B6445E2008A659D /* NotesViewControllerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B0542B6445E2008A659D /* NotesViewControllerImpl.swift */; };
@@ -34,7 +33,6 @@
 		8FD4B0372B64419F008A659D /* CFTNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CFTNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FD4B03A2B64419F008A659D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8FD4B03C2B64419F008A659D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8FD4B0442B64419F008A659D /* CFTNotes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CFTNotes.xcdatamodel; sourceTree = "<group>"; };
 		8FD4B0462B6441A1008A659D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8FD4B0492B6441A1008A659D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8FD4B04B2B6441A1008A659D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -95,7 +93,6 @@
 				8FD4B0462B6441A1008A659D /* Assets.xcassets */,
 				8FD4B0482B6441A1008A659D /* LaunchScreen.storyboard */,
 				8FD4B04B2B6441A1008A659D /* Info.plist */,
-				8FD4B0432B64419F008A659D /* CFTNotes.xcdatamodeld */,
 			);
 			path = CFTNotes;
 			sourceTree = "<group>";
@@ -256,7 +253,6 @@
 				8FD4B03D2B64419F008A659D /* SceneDelegate.swift in Sources */,
 				8FD4B05E2B644E9D008A659D /* NotesInteractorImpl.swift in Sources */,
 				8FD4B0552B6445E2008A659D /* NotesViewControllerImpl.swift in Sources */,
-				8FD4B0452B64419F008A659D /* CFTNotes.xcdatamodeld in Sources */,
 				8FD4B0662B6593F1008A659D /* SyntaxHighlightTextStorage.swift in Sources */,
 				8FD4B0742B67B29E008A659D /* NoteObjModel.swift in Sources */,
 				8FD4B0602B645444008A659D /* NoteCell.swift in Sources */,
@@ -477,19 +473,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		8FD4B0432B64419F008A659D /* CFTNotes.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				8FD4B0442B64419F008A659D /* CFTNotes.xcdatamodel */,
-			);
-			currentVersion = 8FD4B0442B64419F008A659D /* CFTNotes.xcdatamodel */;
-			path = CFTNotes.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 8FD4B02F2B64419F008A659D /* Project object */;
 }

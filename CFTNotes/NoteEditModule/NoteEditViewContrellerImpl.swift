@@ -122,6 +122,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
         
         textView = UITextView(frame: newTextViewRect,
                               textContainer: container)
+        textView.font = .systemFont(ofSize: 17)
         textView.delegate = self
         view.addSubview(textView)
     }
