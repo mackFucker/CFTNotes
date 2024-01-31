@@ -51,12 +51,13 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         endEditing()
     }
     
-    func addImage(_ image: UIImage, at position: NSRange) {
+    func addImage(_ image: UIImage,
+                  at position: NSRange) {
         let imageAttachment = NSTextAttachment()
     
         let scaledImage = image.scalePreservingAspectRatio(targetSize: UIScreen.main.bounds.size)
         imageAttachment.image = scaledImage
-        
+
         let imageString = NSAttributedString(attachment: imageAttachment)
         
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
@@ -65,7 +66,10 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
 
         let attributedString = NSMutableAttributedString(attributedString: imageString)
         
-        attributedString.addAttribute(NSAttributedString.Key.font, value: font, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSAttributedString.Key.font,
+                                      value: font,
+                                      range: NSRange(location: 0,
+                                                     length: attributedString.length))
         
         if position.length == 0 {
             self.insert(attributedString,
@@ -99,7 +103,6 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         case .importantRed:
             let attributes = [NSAttributedString.Key.foregroundColor: UIColor.red]
             addAttributes(attributes, range: searchRange)
-            
         }
     }
     
@@ -111,3 +114,18 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         return [.font: font]
     }
 }
+
+final class test: NSTextAttachment {
+    private let imageAtPath: String
+    
+    init(imageAtPath: String) {
+        self.imageAtPath = imageAtPath
+        super.init(data: nil, ofType: nil)
+        self.image = UIImage(contentsOfFile: imageAtPath)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
