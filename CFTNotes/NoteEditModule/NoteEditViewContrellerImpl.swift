@@ -13,22 +13,25 @@ protocol NoteEditViewContreller: AnyObject {
 }
 
 final class NoteEditViewContrellerImpl: UIViewController {
-    private var textStorage = SyntaxHighlightTextStorage()
-    var presenter = NoteEditPresenterImpl()
-    private let imagePickerManager: ImagePickerManager = ImagePickerManager()
+    private var textStorage: SyntaxHighlightTextStorage
+    private let imagePickerManager: ImagePickerManager
     
+    var presenter: NoteEditPresenter!
+
     private var textView: UITextView!
     private var stylesButtonStack: UIStackView!
     
     private var uuid: String
-    
     private var data: NoteObjModel? = nil
-    
     private var lastText = ""
     
-    init(uuid: String!) {
+    init(uuid: String!,
+         textStorage: SyntaxHighlightTextStorage,
+         imagePickerManager: ImagePickerManager) {
         
         self.uuid = uuid
+        self.textStorage = textStorage
+        self.imagePickerManager = imagePickerManager
         super.init(nibName: nil, bundle: nil)
     }
     

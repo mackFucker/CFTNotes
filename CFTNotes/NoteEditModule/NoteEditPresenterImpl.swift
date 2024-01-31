@@ -13,15 +13,15 @@ protocol NoteEditPresenter: AnyObject {
 }
 
 final class NoteEditPresenterImpl: NoteEditPresenter {
-    private var interactor = NoteEditInteractorImpl()
-//    weak var view: NoteEditViewContreller?
+    private var interactor: NoteEditInteractor
+    weak var view: NoteEditViewContreller?
     
-//    init(interactor: NoteEditInteractor,
-//         view: NoteEditViewContreller) {
-//        
-//        self.interactor = interactor
-//        self.view = view
-//    }
+    init(interactor: NoteEditInteractor,
+         view: NoteEditViewContreller) {
+        
+        self.interactor = interactor
+        self.view = view
+    }
     
     func getBy(uuid: String) async -> NoteObjModel? {
         do {
@@ -29,12 +29,12 @@ final class NoteEditPresenterImpl: NoteEditPresenter {
         }
         catch {
             let error = error as! SwiftDataService.Errors
-//            switch error {
-//            case .fetchingError:
-//                view?.showAlert(error: "Fetching error")
-//            case .notFound:
-//                view?.showAlert(error: "Not found")
-//            }
+            switch error {
+            case .fetchingError:
+                view?.showAlert(error: "Fetching error")
+            case .notFound:
+                view?.showAlert(error: "Not found")
+            }
             return NoteObjModel(id: "", text: "", time: 00)
         }
     }
