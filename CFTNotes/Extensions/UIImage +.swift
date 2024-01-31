@@ -9,9 +9,8 @@ import UIKit
 
 extension UIImage {
     func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage {
-        
-        let widthRatio = targetSize.width / size.width
-        let heightRatio = targetSize.height / size.height
+        let widthRatio = targetSize.width / size.width + 20
+        let heightRatio = targetSize.height / size.height + 20
         
         let scaleFactor = min(widthRatio, heightRatio)
         

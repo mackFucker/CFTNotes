@@ -16,15 +16,7 @@ final class MainRouter: MainRouterProtocol {
         
     func noteEditShow(navConroller: UINavigationController?,
                       uuid: String) {
-        let interactor = NoteEditInteractorImpl()
-        
-        let textStorage = SyntaxHighlightTextStorage()
-        let editViewController = NoteEditViewContrellerImpl(uuid: uuid,
-                                                            textStorage: textStorage)
-        let presenter = NoteEditPresenterImpl(interactor: interactor,
-                                              view: editViewController)
-        editViewController.presenter = presenter
-        
+        let editViewController = NoteEditViewContrellerImpl(uuid: uuid)        
         navConroller?.pushViewController(editViewController, animated: true)
     }
 }

@@ -13,8 +13,8 @@ protocol NoteEditViewContreller: AnyObject {
 }
 
 final class NoteEditViewContrellerImpl: UIViewController {
-    private var textStorage: SyntaxHighlightTextStorage
-    var presenter: NoteEditPresenter!
+    private var textStorage = SyntaxHighlightTextStorage()
+    var presenter = NoteEditPresenterImpl()
     private let imagePickerManager: ImagePickerManager = ImagePickerManager()
     
     private var textView: UITextView!
@@ -26,11 +26,9 @@ final class NoteEditViewContrellerImpl: UIViewController {
     
     private var lastText = ""
     
-    init(uuid: String!,
-         textStorage: SyntaxHighlightTextStorage) {
+    init(uuid: String!) {
         
         self.uuid = uuid
-        self.textStorage = textStorage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -114,11 +112,8 @@ final class NoteEditViewContrellerImpl: UIViewController {
     }
     
     private func createTextView() {
-        
         let newTextViewRect = view.bounds
-        
         let layoutManager = NSLayoutManager()
-        
         let containerSize = CGSize(width: newTextViewRect.width,
                                    height: .greatestFiniteMagnitude)
         let container = NSTextContainer(size: containerSize)
@@ -168,15 +163,18 @@ final class NoteEditViewContrellerImpl: UIViewController {
         stylesButtonStack.alignment = .center
         stylesButtonStack.backgroundColor = .systemGray3
         stylesButtonStack.layer.cornerRadius = 10
-        bottomConstraint = stylesButtonStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+        bottomConstraint = stylesButtonStack.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                                                     constant: -20)
         view.addSubview(stylesButtonStack)
     }
     
     private lazy var addImageButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "photo.badge.plus"), for: .normal)
+        button.setImage(UIImage(systemName: "photo.badge.plus"),
+                        for: .normal)
         button.imageView?.tintColor = .black
-        button.addTarget(self, action: #selector(addImage), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addImage),
+                         for: .touchUpInside)
         return button
     }()
     

@@ -78,9 +78,8 @@ final class NotesViewControllerImpl: UIViewController {
     @MainActor
     private func updateTableView(with data: [NoteObjModel]) {
         self.data = data
-        tableView.reloadData()
+        tableView.reloadData(with: .automatic)
     }
-    
 }
 
 extension NotesViewControllerImpl: UITableViewDataSource {
