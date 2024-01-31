@@ -18,7 +18,7 @@ final class ImagePickerManager: NSObject,
     
     func pickImage(vc: UIViewController,
                    imagePickedBlock: @escaping (URL) -> Void) {
-        pickerConfiguration.preferredAssetRepresentationMode = .compatible
+        pickerConfiguration.preferredAssetRepresentationMode = .automatic
         self.imagePickedBlock = imagePickedBlock
         self.picker = PHPickerViewController(configuration: pickerConfiguration)
         picker.delegate = self
@@ -30,9 +30,10 @@ final class ImagePickerManager: NSObject,
         
         for (_,result) in results.enumerated() {
             result.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { (url, error) in
-                guard let fileUrl = url else { return }
-                self.imagePickedBlock!(fileUrl)
-                print(fileUrl)
+                guard let fileUrl = url else {
+                    return
+                }
+                self.imagePickedBlock!(fileUrl)              
             }
         }
         picker.dismiss(animated: true, completion: nil)

@@ -8,12 +8,15 @@
 import UIKit
 import PhotosUI
 
+protocol NoteEditViewContreller: AnyObject {
+    func showAlert(error: String)
+}
+
 final class NoteEditViewContrellerImpl: UIViewController {
-    private var textStorage = SyntaxHighlightTextStorage()
-    private var presenter: NoteEditPresenter = NoteEditPresenterImpl()
+    private var textStorage: SyntaxHighlightTextStorage
+    var presenter: NoteEditPresenter!
     private let imagePickerManager: ImagePickerManager = ImagePickerManager()
     
-    private let screenBounds = UIScreen.main.bounds
     private var textView: UITextView!
     private var stylesButtonStack: UIStackView!
     
@@ -23,9 +26,11 @@ final class NoteEditViewContrellerImpl: UIViewController {
     
     private var lastText = ""
     
-    init(uuid: String!) {
+    init(uuid: String!,
+         textStorage: SyntaxHighlightTextStorage) {
         
         self.uuid = uuid
+        self.textStorage = textStorage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -178,7 +183,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
     @objc
     private func addImage() {
         self.imagePickerManager.pickImage(vc: self) { image in
-            Task.detached {  @MainActor in
+            Task.detached { @MainActor in
                 self.textStorage.addImage(image,
                                           at: self.textView.selectedRange)
             }
@@ -220,5 +225,19 @@ extension NoteEditViewContrellerImpl: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+}
+
+extension NoteEditViewContrellerImpl: NoteEditViewContreller {
+    func showAlert(error: String) {
+        let alert = UIAlertController(title: "Error",
+                                      message: error,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK",
+                                      style: .default,
+                                      handler: nil))
+        Task.detached { @MainActor in
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }

@@ -12,8 +12,7 @@ protocol NotesViewController: AnyObject {
     func showAlert(error: String)
 }
 
-final class NotesViewControllerImpl: UIViewController,
-                                     NotesViewController {
+final class NotesViewControllerImpl: UIViewController {
     private let router = MainRouter()
     var presenter: NotesPresenter!
     var data = [NoteObjModel]()
@@ -45,18 +44,6 @@ final class NotesViewControllerImpl: UIViewController,
         button.tintColor = .label
         return button
     }()
-    
-    func showAlert(error: String) {
-        let alert = UIAlertController(title: "Error",
-                                      message: error,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK",
-                                      style: .default,
-                                      handler: nil))
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
     
     @objc
     private func appendNote() {
@@ -128,5 +115,19 @@ extension NotesViewControllerImpl: UITableViewDelegate {
         let configuration = UISwipeActionsConfiguration(actions: [delete])
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
+    }
+}
+
+extension NotesViewControllerImpl: NotesViewController {
+    func showAlert(error: String) {
+        let alert = UIAlertController(title: "Error",
+                                      message: error,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK",
+                                      style: .default,
+                                      handler: nil))
+        Task.detached { @MainActor in
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
