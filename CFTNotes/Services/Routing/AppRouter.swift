@@ -21,6 +21,8 @@ final class AppRouter {
         viewController.presenter = presenter
         
         let navController = UINavigationController(rootViewController: viewController)
+        
+        navController.overrideUserInterfaceStyle = .light
         window?.rootViewController = navController
         navController.navigationBar.prefersLargeTitles = true
 

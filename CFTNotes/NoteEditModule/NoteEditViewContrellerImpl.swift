@@ -11,8 +11,9 @@ import PhotosUI
 final class NoteEditViewContrellerImpl: UIViewController {
     private var textStorage = SyntaxHighlightTextStorage()
     private var presenter: NoteEditPresenter = NoteEditPresenterImpl()
-    private let screenBounds = UIScreen.main.bounds
+    private let imagePickerManager: ImagePickerManager = ImagePickerManager()
     
+    private let screenBounds = UIScreen.main.bounds
     private var textView: UITextView!
     private var stylesButtonStack: UIStackView!
     
@@ -41,7 +42,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
         
         createTextView()
         createStylesButtons()
-
+        
         addNotification()
         setupUI()
         
@@ -99,7 +100,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
-    @MainActor 
+    @MainActor
     private func setData(_ data: NoteObjModel?) {
         let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
         let attrString = NSAttributedString(string: data?.text ?? "error",
@@ -116,6 +117,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
         let containerSize = CGSize(width: newTextViewRect.width,
                                    height: .greatestFiniteMagnitude)
         let container = NSTextContainer(size: containerSize)
+        
         container.widthTracksTextView = true
         layoutManager.addTextContainer(container)
         textStorage.addLayoutManager(layoutManager)
@@ -123,7 +125,9 @@ final class NoteEditViewContrellerImpl: UIViewController {
         textView = UITextView(frame: newTextViewRect,
                               textContainer: container)
         textView.font = .systemFont(ofSize: 17)
+        textView.textColor = .label
         textView.delegate = self
+        textView.backgroundColor = .white
         view.addSubview(textView)
     }
     
@@ -151,7 +155,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
                                    action: #selector(applyStyle),
                                    for: .touchUpInside)}
         views.append(addImageButton)
-    
+        
         stylesButtonStack = UIStackView(arrangedSubviews: views)
         stylesButtonStack.translatesAutoresizingMaskIntoConstraints = false
         stylesButtonStack.axis = .horizontal
@@ -173,12 +177,12 @@ final class NoteEditViewContrellerImpl: UIViewController {
     
     @objc
     private func addImage() {
-        var config = PHPickerConfiguration()
-        config.selectionLimit = 1
-        
-        let picker = PHPickerViewController(configuration: config)
-        picker.delegate = self
-        self.present(picker, animated: true)
+        self.imagePickerManager.pickImage(vc: self) { image in
+            Task.detached {  @MainActor in
+                self.textStorage.addImage(image,
+                                          at: self.textView.selectedRange)
+            }
+        }
     }
     
     @objc
@@ -188,33 +192,13 @@ final class NoteEditViewContrellerImpl: UIViewController {
     }
 }
 
-extension NoteEditViewContrellerImpl: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController,
-                didFinishPicking results: [PHPickerResult]) {
-        
-        for result in results {
-            result.itemProvider.loadObject(ofClass: UIImage.self) { object,
-                error in
-                if let image = object as? UIImage {
-                    DispatchQueue.main.async {
-                        self.textStorage.addImage(image,
-                                                  at: self.textView.selectedRange)
-                    }
-                }
-            }
-        }
-        
-        dismiss(animated: true)
-    }
-}
-
 extension NoteEditViewContrellerImpl: UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         
         if lastText.isEmpty {
             lastText = textView.text
-            }
-
+        }
+        
         NSObject.cancelPreviousPerformRequests(withTarget: self,
                                                selector: #selector(setDataInPresenter),
                                                object: lastText)

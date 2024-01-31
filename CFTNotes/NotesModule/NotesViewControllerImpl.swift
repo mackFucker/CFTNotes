@@ -31,7 +31,6 @@ final class NotesViewControllerImpl: UIViewController,
         tableView.rowHeight = UITableView.automaticDimension
         tableView.rowHeight = 44
         tableView.register(NoteCell.self)
-        
         return tableView
     }()
     

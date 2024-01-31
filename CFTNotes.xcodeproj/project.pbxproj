@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8FB5E36C2B6A7A4A00C97391 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB5E36B2B6A7A4A00C97391 /* ImagePickerManager.swift */; };
 		8FD4B03B2B64419F008A659D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B03A2B64419F008A659D /* AppDelegate.swift */; };
 		8FD4B03D2B64419F008A659D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B03C2B64419F008A659D /* SceneDelegate.swift */; };
 		8FD4B0472B6441A1008A659D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FD4B0462B6441A1008A659D /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8FB5E36B2B6A7A4A00C97391 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
 		8FD4B0372B64419F008A659D /* CFTNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CFTNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FD4B03A2B64419F008A659D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8FD4B03C2B64419F008A659D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				8FD4B0792B685838008A659D /* Routing */,
 				8FD4B0722B67B282008A659D /* SwiftDataService */,
 				8FD4B0652B6593F1008A659D /* SyntaxHighlightTextStorage.swift */,
+				8FB5E36B2B6A7A4A00C97391 /* ImagePickerManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				8FD4B0662B6593F1008A659D /* SyntaxHighlightTextStorage.swift in Sources */,
 				8FD4B0742B67B29E008A659D /* NoteObjModel.swift in Sources */,
 				8FD4B0602B645444008A659D /* NoteCell.swift in Sources */,
+				8FB5E36C2B6A7A4A00C97391 /* ImagePickerManager.swift in Sources */,
 				8FD4B0782B685819008A659D /* AppRouter.swift in Sources */,
 				8FD4B07F2B68F18B008A659D /* NoteEditInteractorImpl.swift in Sources */,
 				8FD4B06B2B667DAD008A659D /* UIStyleButton.swift in Sources */,
@@ -411,6 +415,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -438,6 +443,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
