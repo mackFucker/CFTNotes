@@ -16,7 +16,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
     private let textStorage: SyntaxHighlightTextStorage
     private let imagePickerManager: ImagePickerManager
     var presenter: NoteEditPresenter!
-
+    
     private var textView: UITextView!
     private var stylesButtonStack: UIStackView!
     private var bottomConstraint: NSLayoutConstraint!
@@ -43,7 +43,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
         super.viewDidLoad()
         Task {
             data = await presenter.getBy(uuid: uuid)
-            setData(data)
+            setData(data!)
         }
         
         createTextView()
@@ -106,19 +106,15 @@ final class NoteEditViewContrellerImpl: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
-    private func setData(_ data: NoteObjModel?) {
-        let html = String(data: data!.textData, encoding: .utf8) ?? ""
-        let data = Data(html.utf8)
-        if let attributedStringHtml = try? NSAttributedString(data: data,
-                                                              options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-            let mutableAttributedString = NSMutableAttributedString(attributedString: attributedStringHtml)
-            let font = UIFont.systemFont(ofSize: 17)
-            mutableAttributedString.addAttribute(NSAttributedString.Key.font,
-                                                 value: font, range: NSRange(location: 0,
-                                                                             length: mutableAttributedString.length))
-            
-            textStorage.append(mutableAttributedString)
-        }
+    private func setData(_ data: NoteObjModel) {
+        let attr = try! NSAttributedString(data: data.textData,
+                                           documentType: .html)
+        
+        // FIXME:
+//        let html = String(data: data.textData, encoding: .utf8) ?? ""
+//        print(html)
+        // FIXME:
+        textStorage.append(attr)
     }
     
     private func createTextView() {
@@ -134,7 +130,8 @@ final class NoteEditViewContrellerImpl: UIViewController {
         
         textView = UITextView(frame: newTextViewRect,
                               textContainer: container)
-        textView.font = .systemFont(ofSize: 17)
+        textView.font = UIFont(name: "Times New Roman",
+                               size: 17)
         textView.textColor = .label
         textView.delegate = self
         textView.backgroundColor = .white
@@ -145,7 +142,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
     private func hideKeyboard() {
         view.endEditing(true)
     }
-        
+    
     override func updateViewConstraints() {
         super.updateViewConstraints()
         NSLayoutConstraint.activate([
