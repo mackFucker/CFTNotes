@@ -36,9 +36,8 @@ final class NoteCell: UITableViewCell {
     }()
     
     func setup(title: Data) {
-        let attr = try! NSAttributedString(data: title,
-                                           documentType: .html)
-        self.title.attributedText = attr
+        let attrData = title as NSData
+        self.title.attributedText = attrData.toAttributedString(ignoringTextAttachment: true)
     }
     
     override func updateConstraints() {

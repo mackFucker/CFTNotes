@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8F4C92072B6BB94D005B6C82 /* NSAttributedString +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4C92062B6BB94D005B6C82 /* NSAttributedString +.swift */; };
+		8F4C920B2B6BE7BC005B6C82 /* NSData + .swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4C920A2B6BE7BC005B6C82 /* NSData + .swift */; };
 		8FB5E36C2B6A7A4A00C97391 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB5E36B2B6A7A4A00C97391 /* ImagePickerManager.swift */; };
-		8FB5E36F2B6ADC6900C97391 /* NSTextAttachmentCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB5E36E2B6ADC6800C97391 /* NSTextAttachmentCustom.swift */; };
 		8FB5E3712B6AEAB600C97391 /* UITableView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB5E3702B6AEAB600C97391 /* UITableView +.swift */; };
 		8FD4B03B2B64419F008A659D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B03A2B64419F008A659D /* AppDelegate.swift */; };
 		8FD4B03D2B64419F008A659D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD4B03C2B64419F008A659D /* SceneDelegate.swift */; };
@@ -35,8 +35,8 @@
 
 /* Begin PBXFileReference section */
 		8F4C92062B6BB94D005B6C82 /* NSAttributedString +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString +.swift"; sourceTree = "<group>"; };
+		8F4C920A2B6BE7BC005B6C82 /* NSData + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSData + .swift"; sourceTree = "<group>"; };
 		8FB5E36B2B6A7A4A00C97391 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
-		8FB5E36E2B6ADC6800C97391 /* NSTextAttachmentCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextAttachmentCustom.swift; sourceTree = "<group>"; };
 		8FB5E3702B6AEAB600C97391 /* UITableView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView +.swift"; sourceTree = "<group>"; };
 		8FD4B0372B64419F008A659D /* CFTNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CFTNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FD4B03A2B64419F008A659D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -78,7 +78,6 @@
 			children = (
 				8FD4B0672B65C3EE008A659D /* Style.swift */,
 				8FD4B0652B6593F1008A659D /* SyntaxHighlightTextStorage.swift */,
-				8FB5E36E2B6ADC6800C97391 /* NSTextAttachmentCustom.swift */,
 			);
 			path = TextStorageService;
 			sourceTree = "<group>";
@@ -160,6 +159,7 @@
 				8FD4B0752B67C82E008A659D /* UITableViewCell +.swift */,
 				8FB5E3702B6AEAB600C97391 /* UITableView +.swift */,
 				8F4C92062B6BB94D005B6C82 /* NSAttributedString +.swift */,
+				8F4C920A2B6BE7BC005B6C82 /* NSData + .swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -264,7 +264,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FD4B0762B67C82E008A659D /* UITableViewCell +.swift in Sources */,
-				8FB5E36F2B6ADC6900C97391 /* NSTextAttachmentCustom.swift in Sources */,
 				8FD4B0642B64FF7B008A659D /* NoteEditViewContrellerImpl.swift in Sources */,
 				8FD4B03B2B64419F008A659D /* AppDelegate.swift in Sources */,
 				8F4C92072B6BB94D005B6C82 /* NSAttributedString +.swift in Sources */,
@@ -280,6 +279,7 @@
 				8FD4B0602B645444008A659D /* NoteCell.swift in Sources */,
 				8FB5E36C2B6A7A4A00C97391 /* ImagePickerManager.swift in Sources */,
 				8FD4B0782B685819008A659D /* AppRouter.swift in Sources */,
+				8F4C920B2B6BE7BC005B6C82 /* NSData + .swift in Sources */,
 				8FD4B07F2B68F18B008A659D /* NoteEditInteractorImpl.swift in Sources */,
 				8FD4B06B2B667DAD008A659D /* UIStyleButton.swift in Sources */,
 				8FB5E3712B6AEAB600C97391 /* UITableView +.swift in Sources */,

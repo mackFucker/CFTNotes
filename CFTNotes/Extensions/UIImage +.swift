@@ -8,17 +8,17 @@
 import UIKit
 
 extension UIImage {
-    func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage {
+    func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage? {
         let widthRatio = targetSize.width / size.width
         let heightRatio = targetSize.height / size.height
         
-        let scaleFactor = min(widthRatio, heightRatio)
+        let scaleFactor = min(widthRatio, heightRatio) / 3
         
         let scaledImageSize = CGSize(
             width: size.width * scaleFactor,
             height: size.height * scaleFactor
         )
-
+        
         let renderer = UIGraphicsImageRenderer(
             size: scaledImageSize
         )
@@ -29,6 +29,7 @@ extension UIImage {
                 size: scaledImageSize
             ))
         }
+    
         return scaledImage
     }
 }

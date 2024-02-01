@@ -50,31 +50,6 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         endEditing()
     }
     
-    func addImage(_ pathAtImage: URL,
-                  at position: NSRange) {
-        let imageAttachment = NSTextAttachmentCustom(imageAtPath: pathAtImage)
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        
-        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-        let descriptorWithTrait = fontDescriptor.withSymbolicTraits(.classClarendonSerifs)
-        let font = UIFont(descriptor: descriptorWithTrait!, size: 0)
-        
-        let attributedString = NSMutableAttributedString(attributedString: imageString)
-        attributedString.addAttribute(NSAttributedString.Key.font,
-                                      value: font,
-                                      range: NSRange(location: 0,
-                                                     length: attributedString.length))
-        
-        if position.length == 0 {
-            self.insert(attributedString,
-                        at: position.location)
-        } else {
-            deleteCharacters(in: position)
-            self.insert(attributedString,
-                        at: position.location)
-        }
-    }
-    
     func applyStylesToRange(searchRange: NSRange,
                             style: Style) {
         switch style {

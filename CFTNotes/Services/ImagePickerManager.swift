@@ -6,40 +6,40 @@
 //
 
 import UIKit
-import PhotosUI
 
 final class ImagePickerManager: NSObject,
-                                PHPickerViewControllerDelegate,
+                                UIImagePickerControllerDelegate,
                                 UINavigationControllerDelegate {
-   
-    var pickerConfiguration = PHPickerConfiguration()
-    var picker: PHPickerViewController!
-    var imagePickedBlock: ((URL) -> Void)?
+    
+    var picker: UIImagePickerController!
+    private var textView: UITextView!
     
     func pickImage(vc: UIViewController,
-                   imagePickedBlock: @escaping (URL) -> Void) {
-        pickerConfiguration.preferredAssetRepresentationMode = .automatic
-        self.imagePickedBlock = imagePickedBlock
-        self.picker = PHPickerViewController(configuration: pickerConfiguration)
+                   textView: UITextView) {
+        
+        self.textView = textView
+        self.picker = UIImagePickerController()
         picker.delegate = self
         vc.present(picker, animated: true)
     }
     
-    func picker(_ picker: PHPickerViewController,
-                didFinishPicking results: [PHPickerResult]) {
-        
-        for (_,result) in results.enumerated() {
-            result.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { (url, error) in
-                guard let fileUrl = url else {
-                    return
-                }
-                self.imagePickedBlock!(fileUrl)
-            }
-        }
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
+        
+        guard let image = info[.originalImage] as? UIImage,
+              let scaledImage = image.scalePreservingAspectRatio(targetSize: UIScreen.main.bounds.size),
+              let encodedImageString = scaledImage.pngData()?.base64EncodedString(),
+              let attributedString = NSAttributedString(base64EndodedImageString: encodedImageString)
+        else { return }
+        
+        let attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
+        attributedText.append(attributedString)
+        textView.attributedText = attributedText
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
 }
+

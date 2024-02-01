@@ -9,7 +9,7 @@ import Foundation
 
 protocol NoteEditPresenter: AnyObject {
     func getBy(uuid: String) async -> NoteObjModel?
-    func set(note: NoteObjModel, newNoteText: Data)
+    func set(note: NoteObjModel, newNoteText: NSData)
 }
 
 final class NoteEditPresenterImpl: NoteEditPresenter {
@@ -35,11 +35,15 @@ final class NoteEditPresenterImpl: NoteEditPresenter {
             case .notFound:
                 view?.showAlert(error: "Not found")
             }
-            return NoteObjModel(id: "", text: Data(), time: 00)
+            return NoteObjModel(id: "",
+                                text: NSData(),
+                                time: 00)
         }
     }
     
-    func set(note: NoteObjModel, newNoteText: Data) {
-        interactor.set(note: note, newNoteText: newNoteText)
+    func set(note: NoteObjModel,
+             newNoteText: NSData) {
+        interactor.set(note: note,
+                       newNoteText: newNoteText)
     }
 }

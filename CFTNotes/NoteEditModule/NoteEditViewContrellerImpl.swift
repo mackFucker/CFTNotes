@@ -107,10 +107,9 @@ final class NoteEditViewContrellerImpl: UIViewController {
     }
     
     private func setData(_ data: NoteObjModel) {
-        let attr = try! NSAttributedString(data: data.textData,
-                                           documentType: .html)
-    
-        textStorage.append(attr)
+        let attr = data.textData as NSData
+        
+        textStorage.append(attr.toAttributedString() ?? NSAttributedString())
     }
     
     private func createTextView() {
@@ -182,12 +181,10 @@ final class NoteEditViewContrellerImpl: UIViewController {
     
     @objc
     private func addImage() {
-        self.imagePickerManager.pickImage(vc: self) { image in
-            Task.detached { @MainActor in
-                self.textStorage.addImage(image,
-                                          at: self.textView.selectedRange)
-                self.setDataInPresenter()
-            }
+        Task.detached { @MainActor in
+            self.imagePickerManager.pickImage(vc: self,
+                                              textView: self.textView)
+            self.setDataInPresenter()
         }
     }
     
@@ -218,9 +215,9 @@ extension NoteEditViewContrellerImpl: UITextViewDelegate {
     
     @objc
     private func setDataInPresenter() {
-        let dataToSet = textView.attributedText?.html
+        let dataToSet = textView.attributedText?.toNSData()
         presenter.set(note: self.data!,
-                      newNoteText: dataToSet ?? Data())
+                      newNoteText: dataToSet!)
     }
 }
 

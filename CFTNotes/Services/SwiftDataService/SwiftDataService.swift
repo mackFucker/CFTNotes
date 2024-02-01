@@ -36,7 +36,7 @@ final class SwiftDataService {
     func append() {
         if let context {
             let noteToBeappended = NoteObjModel(id: UUID().uuidString,
-                                                text: Data(),
+                                                text: NSData(),
                                                 time: Date().timeIntervalSince1970)
             context.insert(noteToBeappended)
             notesPublisher.send(.defaultChanges)
@@ -74,9 +74,9 @@ final class SwiftDataService {
     }
     
     func set(note: NoteObjModel,
-             newNoteText: Data) {
+             newNoteText: NSData) {
         let noteToBeUpdated = note
-        noteToBeUpdated.textData = newNoteText
+        noteToBeUpdated.textData = newNoteText as Data
     }
     
     func deleteBy(note: NoteObjModel) {

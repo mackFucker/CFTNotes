@@ -10,7 +10,8 @@ import Combine
 
 protocol NoteEditInteractor: AnyObject {
     func getBy(uuid: String) async throws -> NoteObjModel? 
-    func set(note: NoteObjModel, newNoteText: Data)
+    func set(note: NoteObjModel,
+             newNoteText: NSData)
 }
 
 final class NoteEditInteractorImpl: NoteEditInteractor {
@@ -20,8 +21,7 @@ final class NoteEditInteractorImpl: NoteEditInteractor {
         try await dbService.getBy(uuid: uuid)
     }
     
-    func set(note: NoteObjModel, newNoteText: Data) {
-
+    func set(note: NoteObjModel, newNoteText: NSData) {
         self.dbService.set(note: note,
                            newNoteText: newNoteText)
     }

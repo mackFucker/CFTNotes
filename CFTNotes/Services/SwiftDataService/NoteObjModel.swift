@@ -15,11 +15,14 @@ final class NoteObjModel {
     var time: Double
     
     init(id: String,
-         text: Data,
+         text: NSData,
          time: Double) {
         
         self.id = id
-        self.textData = text
+        self.textData = text as Data
         self.time = time
     }
 }
+
+
+
