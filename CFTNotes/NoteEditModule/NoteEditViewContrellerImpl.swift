@@ -109,11 +109,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
     private func setData(_ data: NoteObjModel) {
         let attr = try! NSAttributedString(data: data.textData,
                                            documentType: .html)
-        
-        // FIXME:
-//        let html = String(data: data.textData, encoding: .utf8) ?? ""
-//        print(html)
-        // FIXME:
+    
         textStorage.append(attr)
     }
     
@@ -146,8 +142,10 @@ final class NoteEditViewContrellerImpl: UIViewController {
     override func updateViewConstraints() {
         super.updateViewConstraints()
         NSLayoutConstraint.activate([
-            stylesButtonStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            stylesButtonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            stylesButtonStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                       constant: 30),
+            stylesButtonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                        constant: -30),
             bottomConstraint
         ])
     }
@@ -188,6 +186,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
             Task.detached { @MainActor in
                 self.textStorage.addImage(image,
                                           at: self.textView.selectedRange)
+                self.setDataInPresenter()
             }
         }
     }
@@ -196,6 +195,7 @@ final class NoteEditViewContrellerImpl: UIViewController {
     private func applyStyle(_ sender: UIStyleButton) {
         textStorage.applyStylesToRange(searchRange: textView.selectedRange,
                                        style: sender.style)
+        setDataInPresenter()
     }
 }
 

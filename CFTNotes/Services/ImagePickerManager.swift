@@ -33,7 +33,7 @@ final class ImagePickerManager: NSObject,
                 guard let fileUrl = url else {
                     return
                 }
-                self.imagePickedBlock!(fileUrl)              
+                self.imagePickedBlock!(fileUrl)
             }
         }
         picker.dismiss(animated: true, completion: nil)

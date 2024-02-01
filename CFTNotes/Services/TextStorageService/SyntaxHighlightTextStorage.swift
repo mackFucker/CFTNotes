@@ -81,20 +81,24 @@ final class SyntaxHighlightTextStorage: NSTextStorage {
         case .bold:
             let attributes = createAttributesForFontStyle(.body,
                                                           withTrait: .traitBold)
-            addAttributes(attributes, range: searchRange)
+            addAttributes(attributes,
+                          range: searchRange)
             
         case .italic:
             let attributes = createAttributesForFontStyle(.body,
                                                           withTrait: .traitItalic)
-            addAttributes(attributes, range: searchRange)
+            addAttributes(attributes,
+                          range: searchRange)
             
         case .strike:
             let attributes =  [NSAttributedString.Key.strikethroughStyle: 1]
-            addAttributes(attributes, range: searchRange)
+            addAttributes(attributes,
+                          range: searchRange)
             
         case .importantRed:
             let attributes = [NSAttributedString.Key.foregroundColor: UIColor.red]
-            addAttributes(attributes, range: searchRange)
+            addAttributes(attributes,
+                          range: searchRange)
         }
     }
     

@@ -18,9 +18,11 @@ extension NSAttributedString {
     }
     
     func data(_ documentType: DocumentType) -> Data {
-        try! data(from: .init(location: 0, length: length),
-                  documentAttributes: [.documentType: documentType])
+        
+        return try! data(from: .init(location: 0,
+                                     length: length),
+                         documentAttributes: [.documentType: documentType])
     }
     
-    var html: Data { data(.html)  }
+    var html: Data { data(.html) }
 }
