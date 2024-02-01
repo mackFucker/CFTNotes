@@ -106,12 +106,19 @@ final class NoteEditViewContrellerImpl: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
-    @MainActor
     private func setData(_ data: NoteObjModel?) {
-        let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
-        let attrString = NSAttributedString(string: data?.text ?? "error",
-                                            attributes: attrs)
-        textStorage.append(attrString)
+        let html = String(data: data!.textData, encoding: .utf8) ?? ""
+        let data = Data(html.utf8)
+        if let attributedStringHtml = try? NSAttributedString(data: data,
+                                                              options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
+            let mutableAttributedString = NSMutableAttributedString(attributedString: attributedStringHtml)
+            let font = UIFont.systemFont(ofSize: 17)
+            mutableAttributedString.addAttribute(NSAttributedString.Key.font,
+                                                 value: font, range: NSRange(location: 0,
+                                                                             length: mutableAttributedString.length))
+            
+            textStorage.append(mutableAttributedString)
+        }
     }
     
     private func createTextView() {
@@ -214,8 +221,9 @@ extension NoteEditViewContrellerImpl: UITextViewDelegate {
     
     @objc
     private func setDataInPresenter() {
+        let dataToSet = textView.attributedText?.html
         presenter.set(note: self.data!,
-                      newNoteText: textView.text)
+                      newNoteText: dataToSet ?? Data())
     }
 }
 

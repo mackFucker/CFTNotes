@@ -11,7 +11,8 @@ import Combine
 protocol NotesInteractor: AnyObject {
     func append()
     func get() async throws -> [NoteObjModel]
-    func set(note: NoteObjModel, newNoteText: String)
+//    func set(note: NoteObjModel,
+//             newNoteText: Data)
     func deleteBy(note: NoteObjModel)
     func subscribe(presenter: NotesPresenter)
 }
@@ -38,10 +39,10 @@ final class NotesInteractorImpl: NotesInteractor {
         try await dbService.get()
     }
     
-    func set(note: NoteObjModel, newNoteText: String) {
-        dbService.set(note: note,
-                      newNoteText: newNoteText)
-    }
+//    func set(note: NoteObjModel, newNoteText: Data) {
+//        dbService.set(note: note,
+//                      newNoteText: newNoteText)
+//    }
     
     func deleteBy(note: NoteObjModel) {
         dbService.deleteBy(note: note)

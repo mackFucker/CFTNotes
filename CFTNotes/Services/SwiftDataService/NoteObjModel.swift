@@ -11,15 +11,15 @@ import SwiftData
 @Model
 final class NoteObjModel {
     @Attribute(.unique) var id: String
-    var text: String
+    var textData: Data
     var time: Double
     
     init(id: String,
-         text: String,
+         text: Data,
          time: Double) {
         
         self.id = id
-        self.text = text
+        self.textData = text
         self.time = time
     }
 }

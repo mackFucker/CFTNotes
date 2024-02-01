@@ -35,8 +35,19 @@ final class NoteCell: UITableViewCell {
         return title
     }()
     
-    func setup(title: String) {
-        self.title.text = title
+    func setup(title: Data) {
+        let html = String(data: title,
+                          encoding: .utf8) ?? ""
+        let data = Data(html.utf8)
+        if let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
+            let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
+            let font = UIFont.systemFont(ofSize: 17)
+            mutableAttributedString.addAttribute(NSAttributedString.Key.font,
+                                          value: font,
+                                          range: NSRange(location: 0,
+                                                         length: attributedString.length))
+            self.title.attributedText = mutableAttributedString
+        }
     }
     
     override func updateConstraints() {

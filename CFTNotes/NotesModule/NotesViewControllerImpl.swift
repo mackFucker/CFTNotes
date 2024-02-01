@@ -98,7 +98,8 @@ extension NotesViewControllerImpl: UITableViewDataSource {
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(with: NoteCell.reuseIdentifier,
                                                  for: indexPath) as NoteCell
-        cell.setup(title: data[indexPath.row].text)
+        let text = data[indexPath.row].textData
+        cell.setup(title: text)
         return cell
     }
 }
