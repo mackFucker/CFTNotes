@@ -29,8 +29,8 @@ final class UIStyleButton: UIButton {
         }
         self.tintColor = .black
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        self.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        self.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.widthAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     required init?(coder: NSCoder) {

@@ -14,6 +14,7 @@ protocol NotesPresenter: AnyObject {
     func deleteBy(note: NoteObjModel)
     
     func viewDidLoadEvent()
+    func viewWillApearEvent()
     func notesChanges()
 }
 
@@ -53,6 +54,10 @@ final class NotesPresenterImpl: NotesPresenter {
     
     func viewDidLoadEvent() {
         interactor.subscribe(presenter: self)
+    }
+    
+    func viewWillApearEvent() {
+        view?.reloadTableView()
     }
     
     func notesChanges() {

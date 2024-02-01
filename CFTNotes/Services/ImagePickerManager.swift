@@ -43,5 +43,3 @@ final class ImagePickerManager: NSObject,
         picker.dismiss(animated: true, completion: nil)
     }
 }
-
-

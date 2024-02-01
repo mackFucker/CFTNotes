@@ -22,8 +22,10 @@ final class NotesInteractorImpl: NotesInteractor {
     
     func subscribe(presenter: NotesPresenter) {
         dbService.subscribe()
-            .sink(receiveValue: {_ in 
-                presenter.notesChanges()
+            .sink(receiveValue: { value in
+                if value != .appStart {
+                    presenter.notesChanges()
+                }
             })
             .store(in: &cancellable)
     }

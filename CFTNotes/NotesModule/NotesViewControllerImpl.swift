@@ -24,6 +24,12 @@ final class NotesViewControllerImpl: UIViewController {
         presenter.viewDidLoadEvent()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        presenter.viewWillApearEvent()
+    }
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: view.bounds,
                                     style: .insetGrouped)

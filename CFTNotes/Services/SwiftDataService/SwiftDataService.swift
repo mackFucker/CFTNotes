@@ -13,8 +13,8 @@ final class SwiftDataService {
     static var shared = SwiftDataService()
     var container: ModelContainer?
     var context: ModelContext?
-    private var notesPublisher: CurrentValueSubject<[NoteObjModel], Never> = CurrentValueSubject(
-        []
+    private var notesPublisher: CurrentValueSubject<TypeOfChanges, Never> = CurrentValueSubject(
+        .appStart
     )
     
     init() {
@@ -29,7 +29,7 @@ final class SwiftDataService {
         }
     }
     
-    func subscribe() -> AnyPublisher<[NoteObjModel], Never> {
+    func subscribe() -> AnyPublisher<TypeOfChanges, Never> {
         return notesPublisher.eraseToAnyPublisher()
     }
     
@@ -39,7 +39,7 @@ final class SwiftDataService {
                                                 text: "New note",
                                                 time: Date().timeIntervalSince1970)
             context.insert(noteToBeappended)
-            notesPublisher.send([noteToBeappended])
+            notesPublisher.send(.defaultChanges)
         }
     }
     
@@ -77,7 +77,6 @@ final class SwiftDataService {
              newNoteText: String) {
         let noteToBeUpdated = note
         noteToBeUpdated.text = newNoteText
-        notesPublisher.send([])
     }
     
     func deleteBy(note: NoteObjModel) {
@@ -85,14 +84,20 @@ final class SwiftDataService {
         if let context {
             context.delete(noteToBeDeleted)
         }
-        notesPublisher.send([])
+        notesPublisher.send(.defaultChanges)
     }
 }
 
 extension SwiftDataService {
-    
     enum Errors: Error {
         case fetchingError
         case notFound
+    }
+}
+
+extension SwiftDataService {
+    enum TypeOfChanges {
+        case appStart
+        case defaultChanges
     }
 }

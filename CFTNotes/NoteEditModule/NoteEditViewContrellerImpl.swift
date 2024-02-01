@@ -13,16 +13,16 @@ protocol NoteEditViewContreller: AnyObject {
 }
 
 final class NoteEditViewContrellerImpl: UIViewController {
-    private var textStorage: SyntaxHighlightTextStorage
+    private let textStorage: SyntaxHighlightTextStorage
     private let imagePickerManager: ImagePickerManager
-    
     var presenter: NoteEditPresenter!
 
     private var textView: UITextView!
     private var stylesButtonStack: UIStackView!
+    private var bottomConstraint: NSLayoutConstraint!
     
     private var uuid: String
-    private var data: NoteObjModel? = nil
+    private var data: NoteObjModel?
     private var lastText = ""
     
     init(uuid: String!,
@@ -51,7 +51,6 @@ final class NoteEditViewContrellerImpl: UIViewController {
         
         addNotification()
         setupUI()
-        
     }
     
     private func addNotification() {
@@ -65,7 +64,8 @@ final class NoteEditViewContrellerImpl: UIViewController {
                                                object: nil)
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc
+    private func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             bottomConstraint.constant = -keyboardSize.height - 20
             UIView.animate(withDuration: 0.3) {
@@ -74,7 +74,8 @@ final class NoteEditViewContrellerImpl: UIViewController {
         }
     }
     
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc
+    private func keyboardWillHide(notification: NSNotification) {
         bottomConstraint.constant = -20
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -86,7 +87,6 @@ final class NoteEditViewContrellerImpl: UIViewController {
                                                action: #selector(self.hideKeyboard))
         let swipeDown = UISwipeGestureRecognizer(target: self,
                                                  action:  #selector(self.hideKeyboard))
-        
         let hideTouch = UITapGestureRecognizer(target: textView,
                                                action:  #selector(self.hideKeyboard))
         
@@ -135,23 +135,20 @@ final class NoteEditViewContrellerImpl: UIViewController {
     }
     
     @objc
-    func hideKeyboard() {
+    private func hideKeyboard() {
         view.endEditing(true)
     }
-    
-    private var bottomConstraint: NSLayoutConstraint!
-    
+        
     override func updateViewConstraints() {
         super.updateViewConstraints()
         NSLayoutConstraint.activate([
             stylesButtonStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             stylesButtonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            stylesButtonStack.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             bottomConstraint
         ])
     }
     
-    func createStylesButtons() {
+    private func createStylesButtons() {
         var views: [UIButton] = Style.allCases.map { UIStyleButton(style: $0)}
         views
             .forEach {$0.addTarget(self,
