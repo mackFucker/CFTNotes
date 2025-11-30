@@ -40,6 +40,7 @@ final class SwiftDataService {
                                                 time: Date().timeIntervalSince1970)
             context.insert(noteToBeappended)
             notesPublisher.send(.defaultChanges)
+            save()
         }
     }
     
@@ -77,6 +78,7 @@ final class SwiftDataService {
              newNoteText: NSData) {
         let noteToBeUpdated = note
         noteToBeUpdated.textData = newNoteText as Data
+        save()
     }
     
     func deleteBy(note: NoteObjModel) {
@@ -85,6 +87,15 @@ final class SwiftDataService {
             context.delete(noteToBeDeleted)
         }
         notesPublisher.send(.defaultChanges)
+        save()
+    }
+
+    private func save() {
+        do {
+            try context?.save()
+        } catch {
+            print("Save error:", error)
+        }
     }
 }
 
